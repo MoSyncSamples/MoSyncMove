@@ -5,6 +5,7 @@ var lapCount; // Total amount of laps.
 var lapList; // ListView containing the lap data.
 var lapLatest; // Temporary variable used to determine time between laps.
 var fontSize; // Variable storing the to be calculated font size unit.
+var webView;
 
 // Set initial values and register listeners.
 function initialize() {
@@ -12,56 +13,80 @@ function initialize() {
 	lapCount = 0;
 	timeTotal = 1; // Initial value of 1 because of the 1000ms delay until counter update.
 	
-	// Calculate a font unit size based on screen width eg. 480px * 0.0333 = 16px.
-	fontSize = mosync.nativeui.screenWidth * 0.0333; 
-	
 	// Register a listener to the device's backbutton closing the application on click.
-	document.addEventListener("backbutton", close, true); 
-	
+	document.addEventListener("backbutton", close, true);
+		
 	mosync.nativeui.initUI(); // Initialize the user interface.
 }
 
 // When initUI has completed, UIReady will be called. Here we load the main screen and set additional widget properties.
 mosync.nativeui.UIReady = function() {
-	
-	var mainScreen = document.getNativeElementById("mainScreen");
-	
-	// Load the initial screen element.
-	//var mainScreen = document.getNativeElementById("mainScreen");
 
-	// Display the screen.
-	mainScreen.show();
+	var width = document.body.clientWidth;
+	var height = document.body.clientHeight;
 	
-	// Assign elements to the variables for future reference.
-	lapList = document.getNativeElementById("lapList");
-	timerText = document.getNativeElementById("timerText");
+	// Calculate a font unit size based on screen width eg. 480px * 0.0333 = 16px.
+	fake = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) * 0.08;
 	
-	// Custom function to ease setting of the font color property.
-	setFontColor("timerText", "0x333333");
+	fontSize = device.platform == "Android" ? fake : fake/2;
 	
-	// Custom function to ease setting the font size property.
-	setFontSize("header", 3);
-	setFontSize("timerText", 5);
-	setFontSize("lapLabel", 2);
-	setFontSize("timeLabel", 2);
-	setFontSize("lapTimeLabel", 2);
-	
-	// Fixes iOS height issues for horizontal layout.
-	document.getNativeElementById("labelLayout").setProperty("height", fontSize*5);
-	
-	// Request loading of the icons for the buttons.
-	// loadIcons()
-}
+	var skipSetup = window.localStorage.getItem("skipSetup");
 
-// Add padding to buttons to improve layout.
-function buttonPadding() {
-	var buttonLayout = document.getNativeElementById("buttonLayout");
-	for (var i=0; i < buttonLayout.childNodes.length; i++) {
-		if (i==0||i%2==0) {
-		mosync.nativeui.create("Image", "", {
-				"width": "-1",
-			}).addTo("buttonLayout");
-		}
+	//window.localStorage.setItem("key", "value");
+	if(!skipSetup){
+		var setupActivity = document.getNativeElementById("setupActivity");
+		var setupScreen = document.getNativeElementById("setupScreen");
+		
+		// Display the screen.
+		setupActivity.show();
+		
+		setupScreen.pushTo("setupActivity")
+		
+		// Custom function to ease setting the font size property.
+		setFontSize("welcome", 2);
+		setFontSize("intro", 1.5);
+		setFontSize("setup", 2);
+		setFontSize("skip", 2);
+		setFontSize("nameLabel", 2);
+		setFontSize("name", 2);
+		setFontSize("weightLabel", 2);
+		setFontSize("weight", 2);
+		setFontSize("save", 2);
+	} else {
+		// Load the initial screen element.
+		var mainActivity = document.getNativeElementById("mainActivity");
+		
+		// Display the screen.
+		mainActivity.show();
+		
+		var name = window.localStorage.getItem("name");
+		if (name)
+			alert("Welcome back "+name);
+		
+		// Assign elements to the variables for future reference.
+		lapList = document.getNativeElementById("lapList");
+		timerText = document.getNativeElementById("timerText");
+		
+		// Custom function to ease setting the font size property.
+		setFontSize("timerText", 3);
+		setFontSize("distanceText", 2);
+		setFontSize("caloriesText", 2);
+		setFontSize("timerText2", 3);
+		setFontSize("distanceText2", 2);
+		setFontSize("caloriesText2", 2);
+		setFontSize("lapLabel", 1.6);
+		setFontSize("timeLabel", 1.6);
+		setFontSize("lapTimeLabel", 1.6);
+
+		webView = document.getNativeElementById("mapView");
+		// request the persistent file system
+		window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(filesystem){
+			webView.setProperty("baseUrl", "file://" + filesystem.root.fullPath + "/");
+			webView.setProperty("url", "map.html");
+		});
+
+		// Fixes iOS height issues for horizontal layout.
+		document.getNativeElementById("labelLayout").setProperty("height", fontSize*5);
 	}
 }
 
@@ -82,7 +107,8 @@ function setText(id, text) {
 
 // Function to close the application.
 function close() {
-	mosync.bridge.send(["close"]);
+ 	document.getNativeElementById("setupActivity").pop();
+	//mosync.bridge.send(["close"]);
 }
 
 // Function to make the phone vibrate the specified amount of time(milliseconds).

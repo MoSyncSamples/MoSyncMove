@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+* @file index.html
+* @author Ali Sarrafi
+*
+* Template application that includes librares to access device servies
+* from JavaScript.
+-->
+<html>
+	<head>
+		<meta name="viewport" content="width=320, user-scalable=no, initial-scale=1.0 "/>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+		<title>WalkPaint</title>
+		<script type="text/javascript"
+      				src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDu-R0x3Wby-krQuywO8SifOwlmDgYKzXM&sensor=false">
+    	</script>
+		<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" title="no title" charset="utf-8">
+		<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+		<link rel="stylesheet" href="css/jquery.mobile-1.0.1.css" />
+		<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.0.1.js"></script>
+		<script type="text/javascript" src="js/jquery.ui.autocomplete.min.js"></script>
+		<script type="text/javascript" src="js/jquery.ui.map.js"></script>
+
+		<script type="text/javascript">
+		var globalCoords = [];
+		var watchID;
+		var index = 0;
+		var previousIndex = 0;
+		
+		var sampleLength = 100;
+		var latSamples = [];
+		var lonSamples = [];
+		function startMap(position)
+		{
+			var clientPosition =  new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+			$("#map_canvas").gmap({"center": clientPosition, "zoom": 17, "disableDefaultUI":false, "callback": function(map) {
+					var self = this;
+				}});
+		}
+
+		function getAverage(list)
+		{
+			var average = 0;
+			for(var item in list)
+			{
+				average += item;
+			}
+			return average /(list.length);
+		}
+
+		function startWatching()
+		{
+			averageAccuracy = 0
+			index = 0;
+			watchID = navigator.geolocation.watchPosition(function(newPosition) {
+
+				averageAccuracy = (newPosition.coords.accuracy + index * averageAccuracy)/(index+1);
+				window.localStorage.setItem(index, newPosition);
+				if(index >= sampleLength)
+				{
+					latSamples.shift();
+					lonSamples.shift();
+					latSamples.push(newPosition.coords.latitude);
+					lonSamples.push(newPosition.coords.longitude);
+					averagelatitude = getAverage(latSamples);
+					averagelongitude = getAverage(lonSamples);
+				}
+				else
+				{
+					averagelongitude = newPosition.coords.longitude;
+					averagelatitude = newPosition.coords.latitude;
+					latSamples.push(averagelatitude);
+					lonSamples.push(averagelongitude);
+				}
+				drawMarkers(averagelatitude, averagelongitude);
+				index++;
+			}, null, { 'frequency': 100 });
+		}
+
+		function drawMarkers(averagelatitude, averagelongitude)
+		{
+			var latlng = new google.maps.LatLng(averagelatitude, averagelongitude);
+			$('#map_canvas').gmap('addMarker',{'position': latlng, 'visible': true, 'icon':markerIcon});
+		}
+
+		function stopWatching()
+		{
+			alert("Gathered " + index + " Points with average accuracy of " + averageAccuracy);
+			navigator.geolocation.clearWatch(watchID);
+			index = 0;
+			window.localStorage.clear();
+			averageAccuracy = 0;
+		}
+
+		function initialize()
+		{
+			brushURL = "icons/redbrush.png";
+			iconSize = new google.maps.Size(10,10);
+			markerIcon = new google.maps.MarkerImage(brushURL, iconSize, null, null, iconSize);
+
+			navigator.geolocation.getCurrentPosition(startMap);
+		}
+		</script>
+</head>
+	<body onload="initialize()">
+		<div id="map_canvas"></div>
+	</body>
+</html>

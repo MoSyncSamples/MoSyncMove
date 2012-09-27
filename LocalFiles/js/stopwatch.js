@@ -5,11 +5,16 @@ function mStart() {
 	if(lapCounter == null){
 		
 		setFontColor("timerText", "0x45B327"); // Set the font color of the timerText to green.
+		setFontColor("timerText2", "0x45B327"); // Set the font color of the timerText to green.
 		
 		// Start a repeating function with an interval of 1000 ms.
 		lapCounter = setInterval(function(){
-			setText("timerText", secondsToTime(timeTotal++)); // Update the digit display with the time(seconds) incremented by 1.
-		},1000);
+			setText("timerText", secondsToTime(timeTotal)); // Update the digit display with the time(seconds) incremented by 1.
+			setText("timerText2", secondsToTime(timeTotal)); // Update the digit display with the time(seconds) incremented by 1.
+			timeTotal++;
+		},100);
+
+		webView.setProperty("url", "javascript:startWatching();");
 		
 		vibrate(100); // Vibrate the device for 100ms.
 	}
@@ -20,10 +25,13 @@ function mPause() {
 	
 	// Check if counter is running.
 	if(lapCounter != null){	
-		setFontColor("timerText", "0xE53333"); // Set the font color of the timerText to red.
+		setFontColor("timerText", "0x33B5E5"); // Set the font color of the timerText to red.
+		setFontColor("timerText2", "0x33B5E5"); // Set the font color of the timerText to red.
 		
 		clearInterval(lapCounter); // Clear the counter's current iterations but not the counted time.
 		lapCounter = null; // Clear the counter variable.
+
+		webView.setProperty("url", "javascript:startWatching();");
 		
 		vibrate(100); // Vibrate the device for 100ms.
 	}
@@ -67,8 +75,10 @@ function mReset() {
 	timeTotal = 1;
 	
 	// Reset properties to the origional values.
-	timerText.setProperty("fontColor", "0x333333");
-	timerText.setProperty("text", secondsToTime(0));
+	setFontColor("timerText", "0x33B5E5");
+	setFontColor("timerText2", "0x33B5E5");
+	setText("timerText", secondsToTime(0));
+	setText("timerText2", secondsToTime(0));
 	
 	// Check if the temporarily stored counter was still active when reset was pressed. If the counter was not null then restart.
 	if (restartCounter != null)
@@ -78,29 +88,29 @@ function mReset() {
 }
 
 // Function to convert the seconds into a more readable string eg. 817 converts to 00:13:37.
-function secondsToTime(secs) {
+function secondsToTime(tenth) {
+
+	mosync.rlog('hey1');
 	
 	// Divide the seconds by 60 * 60 = 3600 and then round down. eg. 3699 seconds = 1 hour.
-	var hours = Math.floor(secs / (60 * 60));
+	var minutes = Math.floor(tenth / (10 * 60));
 	// Check if the if the value is below 10, if true add a leading 0.
-	hours = ( hours < 10 ? "0" : "" ) + hours; 
+	minutes = ( minutes < 10 ? "0" : "" ) + minutes; 
 	
-	// Similar to hours but instead of rounding down we save the remainder.
-	var divisor_for_minutes = secs % (60 * 60);
+	// Similar to minutes but instead of rounding down we save the remainder.
+	var divisor_for_seconds = tenth % (10 * 60);
 	// Divide by 60 and then round down to the nearest whole number.
-	var minutes = Math.floor(divisor_for_minutes / 60);
-	// Check if the if the value is below 10, if true add a leading 0.
-	minutes = ( minutes < 10 ? "0" : "" ) + minutes;
-
-	// Same concept as above but save the remainder of the minutes instead.
-	var divisor_for_seconds = divisor_for_minutes % 60;
-	// Round down to the nearest whole number.
-	var seconds = Math.ceil(divisor_for_seconds);
+	var seconds = Math.floor(divisor_for_seconds / 10);
 	// Check if the if the value is below 10, if true add a leading 0.
 	seconds = ( seconds < 10 ? "0" : "" ) + seconds;
+
+	// Same concept as above but save the remainder of the seconds instead.
+	var divisor_for_tenths = divisor_for_seconds % 10;
+	// Round down to the nearest whole number.
+	var tenths = Math.ceil(divisor_for_tenths);
 	
 	// Return the formated time in hh:mm:ss.
-	return hours+":"+minutes+":"+seconds;
+	return minutes+":"+seconds+":"+tenths;
 }
 
 // Function to add the ordinal to the lap count number.

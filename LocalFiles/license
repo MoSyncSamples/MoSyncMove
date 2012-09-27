@@ -1,0 +1,33 @@
+Copyright (C) 2012 Swiftdroid
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License,
+version 2, as published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+MA 02110-1301, USA.
+
+@author Erik Hughes
+ 
+Simple stopwatch application showcasing various features of the Mosync NativeUI,
+including labels, layouts and buttons.
+
+The application has two main parts: JavaScript functions and the HTML structure.
+The JavaScript is also divided into files, user interface and timer functions,
+for easier comprehension.
+
+Index.html walks through the steps of setting up the NativeUI,
+from initialization to display and then finally to interaction.
+HTML is used to structure the applications various elements using
+standard <div> tags with custom attributes, while the JavaScript
+handles more complicated task like determining the correct font size.
+
+Stopwatch.js contains the stopwatch specific functions like start, pause, round and reset,
+as well as time and string formatting.

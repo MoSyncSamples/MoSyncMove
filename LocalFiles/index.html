@@ -1,116 +1,117 @@
-<!--
-Copyright (C) 2012 Swiftdroid
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License,
-version 2, as published by the Free Software Foundation.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-MA 02110-1301, USA.
-
-@author Erik Hughes
- 
-Simple stopwatch application showcasing various features of the Mosync NativeUI,
-including labels, layouts and buttons.
-
-The application has two main parts: JavaScript functions and the HTML structure.
-The JavaScript is also divided into files, user interface and timer functions,
-for easier comprehension.
-
-Index.html walks through the steps of setting up the NativeUI,
-from initialization to display and then finally to interaction.
-HTML is used to structure the applications various elements using
-standard <div> tags with custom attributes, while the JavaScript
-handles more complicated task like determining the correct font size.
-
-Stopwatch.js contains the stopwatch specific functions like start, pause, round and reset,
-as well as time and string formatting.
-
--->
-
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-<title>Swift Stopwatch</title>
-<script type="text/javascript" charset="utf-8" src="js/init.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/stopwatch.js"></script>
-<script type="text/javascript" charset="utf-8" src="js/map.js"></script>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<title>Swift Stopwatch</title>
+
+	<script type="text/javascript" charset="utf-8" src="js/wormhole.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/setup.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/stopwatch.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/map.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/init.js"></script>
+
 </head>
-<!-- NativeUI initialization of the user interface. -->
 <body onload="initialize()">
-<div id="NativeUI">
+	<div id="NativeUI">
 
-	<div data-widgetType="StackScreen" id="stackScreen">
-	
-		<div data-widgetType="Screen" id="welcomeScreen" data-title="Setup" backgroundColor="0x333333">
+		<div widgetType="StackScreen" id="setupActivity">
+
+			<div widgetType="Screen" id="setupScreen" title="Setup" backgroundColor="0x333333" width="100%" height="100%">
+				<div widgetType="VerticalLayout" id="setupLayout" width="-1" height="-1">
+
+					<div widgetType="Label" id="welcome" top="50" width="-1" text="Welcome to MoSync Move!" textHorizontalAlignment="center" fontColor="0xf2f2f2"></div>
+					<div widgetType="Label" id="intro" top="50" width="-1" text="It is your first time here and we recommend that you use the setup guide for optimal experience. The button below will start you off." textHorizontalAlignment="center" fontColor="0xf2f2f2"></div>
+					<div widgetType="Button" id="setup" top="50" width="-1" height="128" fontColor="0x2d2d2d" text="Get Started" textHorizontalAlignment="center" onevent="mSetup();"></div>
+					<div widgetType="Button" id="skip" top="50" width="-1" height="128" fontColor="0x2d2d2d" text="Skip Setup" textHorizontalAlignment="center" onevent="mSkip();"></div>
+				</div>
+			</div>
+
+			<div widgetType="Screen" id="settingsScreen" title="Settings" backgroundColor="0x333333" width="100%" height="100%">
+				<div widgetType="VerticalLayout" id="settingsLayout" width="-1" height="-1">
+
+					<div widgetType="Label" id="nameLabel" top="50" width="-1" text="Name:" fontColor="0xf2f2f2"></div>
+					<div widgetType="EditBox" id="name" width="-1" placeholder="John Doe"></div>
+					<div widgetType="Label" id="weightLabel" top="50" width="-1" text="Weight:" fontColor="0xf2f2f2"></div>
+					<div widgetType="EditBox" id="weight" width="-1" placeholder="70"></div>
+					<div widgetType="Button" id="save" top="50" width="-1" height="128" fontColor="0x2d2d2d" text="Save and Start" textHorizontalAlignment="center" onevent="mSave();"></div>
+				</div>
+			</div>
 		</div>
-		
-		<div data-widgetType="Screen" id="settingsScreen" data-title="Settings" backgroundColor="0x333333">
+
+		<div widgetType="TabScreen" id="mainActivity">
+
+			<div widgetType="Screen" id="stopwatchScreen" title="Stop Watch" backgroundColor="0xEEEEEE" icon_iOS="icons/clock_ios.png" icon_android="icons/clock_android.png">
+				<div widgetType="VerticalLayout" id="stopwatchLayout" width="100%" height="100%">
+
+					<div widgetType="Label" id="timerText" width="-1"  text="00:00:00" textHorizontalAlignment="center" fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
+
+					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY" backgroundColor="0xDDDDDD"></div>
+
+					<div widgetType="HorizontalLayout" id="timeLayout" width="-1" height="84" backgroundColor="0xDDDDDD">
+						<div widgetType="Label" id="distanceText" width="-1" text="0 km" textHorizontalAlignment="center" fontColor="0x666666"></div>
+						<div widgetType="Label" id="caloriesText" width="-1" text="0 cal" textHorizontalAlignment="center" fontColor="0x666666"></div>
+					</div>
+
+					<div widgetType="HorizontalLayout" id="labelLayout" width="-1" height="72" backgroundColor="0x555555">
+						<div widgetType="Label" id="lapLabel" text="Lap" width="-1"  fontColor="0xF2F2F2"></div>
+						<div widgetType="Label" id="timeLabel" text="Time" width="-1" fontColor="0xF2F2F2"></div>
+						<div widgetType="Label" id="lapTimeLabel" text="Lap Time" width="-1" fontColor="0xF2F2F2"></div>
+					</div>
+
+					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY"></div>
+
+					<div widgetType="ListView" id="lapList" width="-1" height="-1"></div>
+
+					<div widgetType="Image" width="-1" height="24" backgroundColor="0x555555"></div>
+					<div widgetType="HorizontalLayout" id="buttonLayout" width="-1" height="96" backgroundColor="0x555555">
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="start" width="72" height="72" image="icons/start.png" onevent="mStart();"></div>
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="pause" width="72" height="72" image="icons/pause.png" onevent="mPause();"></div>
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="round" width="72" height="72" image="icons/round.png" onevent="mRound();"></div>
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="reset" width="72" height="72" image="icons/reset.png" onevent="mReset();"></div>
+						<div widgetType="Image" width="-1"></div>
+					</div>
+
+				</div>
+			</div>
+
+			<div widgetType="Screen" id="mapScreen" title="Map" backgroundColor="0xEEEEEE" icon_iOS="icons/map_ios.png" icon_android="icons/map_android.png">
+				<div widgetType="VerticalLayout" id="mapLayout" width="100%" height="100%">
+
+					<div widgetType="Label" id="timerText2" width="-1"  text="00:00:00" textHorizontalAlignment="center" fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
+
+					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY" backgroundColor="0xDDDDDD"></div>
+
+					<div widgetType="HorizontalLayout" id="timeLayout2" width="-1" height="84" backgroundColor="0xDDDDDD">
+						<div widgetType="Label" id="distanceText2" width="-1" text="0 km" textHorizontalAlignment="center" fontColor="0x666666"></div>
+						<div widgetType="Label" id="caloriesText2" width="-1" text="0 cal" textHorizontalAlignment="center" fontColor="0x666666"></div>
+					</div>
+
+					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY"></div>
+
+					<div widgetType="WebView" id="mapView" width="-1" height="-1"></div>
+
+					<div widgetType="Image" width="-1" height="24" backgroundColor="0x555555"></div>
+					<div widgetType="HorizontalLayout" id="buttonLayout2" width="-1" height="96" backgroundColor="0x555555">
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="start2" width="72" height="72" image="icons/start.png" onevent="mStart();"></div>
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="pause2" width="72" height="72" image="icons/pause.png" onevent="mPause();"></div>
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="round2" width="72" height="72" image="icons/round.png" onevent="mRound();"></div>
+						<div widgetType="Image" width="-1"></div>
+						<div widgetType="ImageButton" id="reset2" width="72" height="72" image="icons/reset.png" onevent="mReset();"></div>
+						<div widgetType="Image" width="-1"></div>
+					</div>
+				</div>
+
+			</div>
 		</div>
-		
-		<div data-widgetType="Screen" id="startScreen" data-title="Start" backgroundColor="0x333333">
-		</div>
-		
+
 	</div>
-
-	<!-- Main screen containing the stopwatch activity. -->
-	<div data-widgetType="TabScreen" id="mainScreen">
-	
-	    <div data-widgetType="Screen" id="stopwatchScreen" data-title="Stopwatch" backgroundColor="0xEEEEEE">
-	    
-	    	<!-- Child elements are veritcally aligned in a layout occupying the entire screen. -->
-	        <div data-widgetType="VerticalLayout" id="stopwatchLayout" data-width="100%" data-height="100%">
-	        
-	            <!-- Header label containing basic properties for fonts as well as data-width="-1" where -1 correlates to match parent element. -->
-	           	<div data-widgetType="Label" id="header" data-width="-1" data-text="Stopwatch" data-textHorizontalAlignment="center" data-fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
-	
-	            <!-- Display a 2 pixel border with a drop shadow. -->
-	            <div data-widgetType="Image" data-width="-1" data-height="12" data-image="icons/header.png" data-scaleMode="scaleXY"></div>
-	            <div data-widgetType="Label" id="timerText" data-width="-1" data-text="00:00:00" data-textHorizontalAlignment="center"></div>
-	            
-	            <!-- Simple title labels for the list. Notice: a width of -1 expands the element as far as possible, meaning 3 besides eachother occupy 1/3 each.  -->
-	            <div data-widgetType="HorizontalLayout" id="labelLayout" data-width="-1" backgroundColor="0x555555">
-	                <div data-widgetType="Label" id="lapLabel" data-text="Lap" data-width="-1"  data-fontColor="0xF2F2F2"></div>
-	                <div data-widgetType="Label" id="timeLabel" data-text="Time" data-width="-1" data-fontColor="0xF2F2F2"></div>
-	                <div data-widgetType="Label" id="lapTimeLabel" data-text="Lap Time" data-width="-1" data-fontColor="0xF2F2F2"></div>
-	            </div>
-	            
-	            <!-- Empty list view to be later filled by laps added. -->
-	            <div data-widgetType="ListView" id="lapList" data-width="-1" data-height="-1"></div>
-	            
-	            <!-- Dummy padding image with background. -->
-	            <div data-widgetType="Image" data-width="-1" data-height="24" backgroundColor="0x555555"></div>
-	            
-	            <!-- Simple horizontal layout with a background. -->
-	            <div data-widgetType="HorizontalLayout" id="buttonLayout" data-width="-1" data-height="96" backgroundColor="0x555555">
-	            	<!-- Dummy padding image. -->
-	            	<div data-widgetType="Image" data-width="-1"></div>
-	                <!-- Each button has a data-onevent property linking to repective functions. -->
-	                <div data-widgetType="ImageButton" id="start" data-width="72" data-height="72" data-image="icons/start.png" data-onevent="mStart();"></div>
-	                <div data-widgetType="Image" data-width="-1"></div>
-	                <div data-widgetType="ImageButton" id="pause" data-width="72" data-height="72" data-image="icons/pause.png" data-onevent="mPause();"></div>
-	                <div data-widgetType="Image" data-width="-1"></div>
-	                <div data-widgetType="ImageButton" id="round" data-width="72" data-height="72" data-image="icons/round.png" data-onevent="mRound();"></div>
-	                <div data-widgetType="Image" data-width="-1"></div>
-	                <div data-widgetType="ImageButton" id="reset" data-width="72" data-height="72" data-image="icons/reset.png" data-onevent="mReset();"></div>
-	                <div data-widgetType="Image" data-width="-1"></div>
-	            </div>
-	        </div>
-	    </div>
-	    
-	    <div data-widgetType="Screen" id="mapScreen" data-title="Map" backgroundColor="0xEEEEEE">
-	    </div>
-	    
-    </div>
 </div>
 </body>
 </html>

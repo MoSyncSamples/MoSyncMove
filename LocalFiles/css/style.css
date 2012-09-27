@@ -1,0 +1,25 @@
+html {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	
+	/* Disable text selection. */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+#map_canvas {
+	height: auto;
+	height: 400px;
+	min-height: 100%;
+	width: 100%;
+}

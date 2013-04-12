@@ -47,7 +47,6 @@ function mRound() {
 		
 		// Create a new lap list item and add it to the list.
 		mosync.nativeui.create("ListViewItem", "lap"+lapCount, {
-			"fontColor": "0x666666",
 			"fontSize" : fontSize*1.5,
 			"width": "-1",
 			"text": getOrdinal(lapCount)+" - "+secondsToTime(timeTotal)+" - "+secondsToTime(timeTotal-lapLatest) // Formated as lap count, time passed and time since last lap. 

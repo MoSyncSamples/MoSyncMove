@@ -31,6 +31,7 @@ mosync.nativeui.UIReady = function() {
 	fontSize = device.platform == "Android" ? fake : fake/2;
 	
 	var skipSetup = window.localStorage.getItem("skipSetup");
+	//window.localStorage.removeItem("skipSetup");
 
 	//window.localStorage.setItem("key", "value");
 	if(!skipSetup){
@@ -86,7 +87,9 @@ mosync.nativeui.UIReady = function() {
 		});
 
 		// Fixes iOS height issues for horizontal layout.
-		document.getNativeElementById("labelLayout").setProperty("height", fontSize*5);
+		document.getNativeElementById("labelLayout").setProperty("height", fontSize*2.2);
+		document.getNativeElementById("timeLayout").setProperty("height", fontSize*2.4);
+		document.getNativeElementById("timeLayout2").setProperty("height", fontSize*2.4);
 	}
 }
 
@@ -107,8 +110,8 @@ function setText(id, text) {
 
 // Function to close the application.
 function close() {
- 	document.getNativeElementById("setupActivity").pop();
-	//mosync.bridge.send(["close"]);
+ 	//document.getNativeElementById("setupActivity").pop();
+	mosync.bridge.send(["close"]);
 }
 
 // Function to make the phone vibrate the specified amount of time(milliseconds).

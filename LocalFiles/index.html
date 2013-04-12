@@ -19,10 +19,11 @@
 			<div widgetType="Screen" id="setupScreen" title="Setup" backgroundColor="0x333333" width="100%" height="100%">
 				<div widgetType="VerticalLayout" id="setupLayout" width="-1" height="-1">
 
-					<div widgetType="Label" id="welcome" top="50" width="-1" text="Welcome to MoSync Move!" textHorizontalAlignment="center" fontColor="0xf2f2f2"></div>
-					<div widgetType="Label" id="intro" top="50" width="-1" text="It is your first time here and we recommend that you use the setup guide for optimal experience. The button below will start you off." textHorizontalAlignment="center" fontColor="0xf2f2f2"></div>
-					<div widgetType="Button" id="setup" top="50" width="-1" height="128" fontColor="0x2d2d2d" text="Get Started" textHorizontalAlignment="center" onevent="mSetup();"></div>
-					<div widgetType="Button" id="skip" top="50" width="-1" height="128" fontColor="0x2d2d2d" text="Skip Setup" textHorizontalAlignment="center" onevent="mSkip();"></div>
+					<!--<div widgetType="Label" id="welcome" top="50" width="-1" text="Welcome to MoSync Move!" textHorizontalAlignment="center" fontColor="0xf2f2f2"></div>-->
+					<div widgetType="Image" id="welcome" top="50" width="-1" image="icons/welcome.png"></div>
+					<div widgetType="Label" id="intro" top="50" width="-1" text="Please enter your information." textHorizontalAlignment="center" fontColor="0xf2f2f2"></div>
+					<div widgetType="Button" id="setup" top="50" width="-1" height="-2" fontColor="0x2d2d2d" text="Get Started" textHorizontalAlignment="center" onevent="mSetup();"></div>
+					<div widgetType="Button" id="skip" top="50" width="-1" height="-2" fontColor="0x2d2d2d" text="Skip Setup" textHorizontalAlignment="center" onevent="mSkip();"></div>
 				</div>
 			</div>
 
@@ -40,38 +41,38 @@
 
 		<div widgetType="TabScreen" id="mainActivity">
 
-			<div widgetType="Screen" id="stopwatchScreen" title="Stop Watch" backgroundColor="0xEEEEEE" icon_iOS="icons/clock_ios.png" icon_android="icons/clock_android.png">
+			<div widgetType="Screen" id="stopwatchScreen" title="Stop Watch"  icon_iOS="icons/clock_ios.png" icon_android="icons/clock_android.png">
 				<div widgetType="VerticalLayout" id="stopwatchLayout" width="100%" height="100%">
 
-					<div widgetType="Label" id="timerText" width="-1"  text="00:00:00" textHorizontalAlignment="center" fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
+					<div widgetType="Label" id="timerText" width="-1"  text="00:00:0" textHorizontalAlignment="center" fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
 
 					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY" backgroundColor="0xDDDDDD"></div>
 
-					<div widgetType="HorizontalLayout" id="timeLayout" width="-1" height="84" backgroundColor="0xDDDDDD">
+					<div widgetType="HorizontalLayout" id="timeLayout" width="-1" height="-2" backgroundColor="0xDDDDDD">
 						<div widgetType="Label" id="distanceText" width="-1" text="0 km" textHorizontalAlignment="center" fontColor="0x666666"></div>
 						<div widgetType="Label" id="caloriesText" width="-1" text="0 cal" textHorizontalAlignment="center" fontColor="0x666666"></div>
 					</div>
 
-					<div widgetType="HorizontalLayout" id="labelLayout" width="-1" height="72" backgroundColor="0x555555">
-						<div widgetType="Label" id="lapLabel" text="Lap" width="-1"  fontColor="0xF2F2F2"></div>
-						<div widgetType="Label" id="timeLabel" text="Time" width="-1" fontColor="0xF2F2F2"></div>
-						<div widgetType="Label" id="lapTimeLabel" text="Lap Time" width="-1" fontColor="0xF2F2F2"></div>
+					<div widgetType="HorizontalLayout" id="labelLayout" width="-1" height="-2" backgroundColor="0x555555">
+						<div widgetType="Label" id="lapLabel" text="Lap" width="-1" height="-2"  fontColor="0xF2F2F2"></div>
+						<div widgetType="Label" id="timeLabel" text="Time" width="-1" height="-2"fontColor="0xF2F2F2"></div>
+						<div widgetType="Label" id="lapTimeLabel" text="Lap Time" width="-1" height="-2" fontColor="0xF2F2F2"></div>
 					</div>
 
 					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY"></div>
 
 					<div widgetType="ListView" id="lapList" width="-1" height="-1"></div>
 
-					<div widgetType="Image" width="-1" height="24" backgroundColor="0x555555"></div>
-					<div widgetType="HorizontalLayout" id="buttonLayout" width="-1" height="96" backgroundColor="0x555555">
+					<div widgetType="Image" width="-1" height="12" backgroundColor="0x555555"></div>
+					<div widgetType="HorizontalLayout" id="buttonLayout" width="-1" height="60" backgroundColor="0x555555">
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="start" width="72" height="72" image="icons/start.png" onevent="mStart();"></div>
+						<div widgetType="ImageButton" id="start" width="48" height="48" image="icons/start.png" onevent="mStart();"></div>
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="pause" width="72" height="72" image="icons/pause.png" onevent="mPause();"></div>
+						<div widgetType="ImageButton" id="pause" width="48" height="48" image="icons/pause.png" onevent="mPause();"></div>
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="round" width="72" height="72" image="icons/round.png" onevent="mRound();"></div>
+						<div widgetType="ImageButton" id="round" width="48" height="48" image="icons/round.png" onevent="mRound();"></div>
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="reset" width="72" height="72" image="icons/reset.png" onevent="mReset();"></div>
+						<div widgetType="ImageButton" id="reset" width="48" height="48" image="icons/reset.png" onevent="mReset();"></div>
 						<div widgetType="Image" width="-1"></div>
 					</div>
 
@@ -81,29 +82,29 @@
 			<div widgetType="Screen" id="mapScreen" title="Map" backgroundColor="0xEEEEEE" icon_iOS="icons/map_ios.png" icon_android="icons/map_android.png">
 				<div widgetType="VerticalLayout" id="mapLayout" width="100%" height="100%">
 
-					<div widgetType="Label" id="timerText2" width="-1"  text="00:00:00" textHorizontalAlignment="center" fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
+					<div widgetType="Label" id="timerText2" width="-1"  text="00:00:0" textHorizontalAlignment="center" fontColor="0x33B5E5" backgroundColor="0xDDDDDD"></div>
 
 					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY" backgroundColor="0xDDDDDD"></div>
 
-					<div widgetType="HorizontalLayout" id="timeLayout2" width="-1" height="84" backgroundColor="0xDDDDDD">
+					<div widgetType="HorizontalLayout" id="timeLayout2" width="-1" height="-2" backgroundColor="0xDDDDDD">
 						<div widgetType="Label" id="distanceText2" width="-1" text="0 km" textHorizontalAlignment="center" fontColor="0x666666"></div>
 						<div widgetType="Label" id="caloriesText2" width="-1" text="0 cal" textHorizontalAlignment="center" fontColor="0x666666"></div>
 					</div>
 
 					<div widgetType="Image" width="-1" height="12" image="icons/header.png" scaleMode="scaleXY"></div>
 
-					<div widgetType="WebView" id="mapView" width="-1" height="-1"></div>
+					<div widgetType="WebView" id="mapView" width="-1" height="-1" verticalScrollBarEnabled="false" enableZoom="false"></div>
 
-					<div widgetType="Image" width="-1" height="24" backgroundColor="0x555555"></div>
-					<div widgetType="HorizontalLayout" id="buttonLayout2" width="-1" height="96" backgroundColor="0x555555">
+					<div widgetType="Image" width="-1" height="12" backgroundColor="0x555555"></div>
+					<div widgetType="HorizontalLayout" id="buttonLayout2" width="-1" height="60" backgroundColor="0x555555">
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="start2" width="72" height="72" image="icons/start.png" onevent="mStart();"></div>
+						<div widgetType="ImageButton" id="start2" width="48" height="48" image="icons/start.png" onevent="mStart();"></div>
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="pause2" width="72" height="72" image="icons/pause.png" onevent="mPause();"></div>
+						<div widgetType="ImageButton" id="pause2" width="48" height="48" image="icons/pause.png" onevent="mPause();"></div>
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="round2" width="72" height="72" image="icons/round.png" onevent="mRound();"></div>
+						<div widgetType="ImageButton" id="round2" width="48" height="48" image="icons/round.png" onevent="mRound();"></div>
 						<div widgetType="Image" width="-1"></div>
-						<div widgetType="ImageButton" id="reset2" width="72" height="72" image="icons/reset.png" onevent="mReset();"></div>
+						<div widgetType="ImageButton" id="reset2" width="48" height="48" image="icons/reset.png" onevent="mReset();"></div>
 						<div widgetType="Image" width="-1"></div>
 					</div>
 				</div>

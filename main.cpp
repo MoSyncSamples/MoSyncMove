@@ -45,10 +45,9 @@ public:
 		// Enable message sending from JavaScript to C++.
 		enableWebViewMessages();
 
-		// The WebView that runs our JavaScript code is hidden.
-		// You can create visible WebViews in the HTML Native UI
-		// markup.
-		getWebView()->setVisible(false);
+		// Show the WebView that contains the HTML/CSS UI
+		// and the JavaScript code.
+		getWebView()->setVisible(true);
 
 		// The page in the "LocalFiles" folder to
 		// show when the application starts.

@@ -57,6 +57,16 @@ mosync.nativeui.UIReady = function() {
         setFontSize("weightLabel", 2);
         setFontSize("weight", 2);
         setFontSize("save", 2);
+
+        setFontSize("timerText", 3);
+        setFontSize("distanceText", 2);
+        setFontSize("caloriesText", 2);
+        setFontSize("timerText2", 3);
+        setFontSize("distanceText2", 2);
+        setFontSize("caloriesText2", 2);
+        setFontSize("lapLabel", 1.6);
+        setFontSize("timeLabel", 1.6);
+        setFontSize("lapTimeLabel", 1.6);
     } else {
         // Load the initial screen element.
         var mainActivity = document.getNativeElementById("mainActivity");
